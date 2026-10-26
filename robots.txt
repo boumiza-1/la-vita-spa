@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://VOTRE-COMPTE.github.io/la-vita-spa-sousse/sitemap.xml
+Sitemap: https://boumiza-1.github.io/la-vita-spa/sitemap.xml
