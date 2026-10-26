@@ -504,7 +504,7 @@ def layout(lang, slug, title, desc, body, schemas, noindex=False):
 <header class="site-header" id="top">
   <div class="wrap bar">
     <a class="brand" href="{href(cur, page_path(lang, ''))}"><span class="brand-mark">LV</span><span>{e(BUSINESS['name'])}</span></a>
-    <button class="menu-btn" aria-label="Menu" aria-expanded="false">☰</button>
+    <button class="menu-btn" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <nav class="nav">{nav_html(lang, cur)}<a class="lang" href="{switch}" hreflang="{other}">{e(t['other_lang'])}</a></nav>
   </div>
 </header>
@@ -525,8 +525,8 @@ def layout(lang, slug, title, desc, body, schemas, noindex=False):
   <div class="wrap copy">© {date.today().year} {e(BUSINESS['name'])}. {e(t['rights'])}</div>
 </footer>
 <div class="sticky-cta">
-  <a class="btn call" href="tel:+216{PH1}">📞 {e(t['call'])}</a>
-  <a class="btn wa" href="{WA}" target="_blank" rel="noopener">💬 {e(t['whatsapp'])}</a>
+  <a class="btn call" href="tel:+216{PH1}">{icon("call")} {e(t['call'])}</a>
+  <a class="btn wa" href="{WA}" target="_blank" rel="noopener">{e(t['whatsapp'])}</a>
 </div>
 </body>
 </html>
@@ -544,7 +544,7 @@ def faq_html(lang, faqs):
 def cta_block(lang):
     t = UI[lang]
     return (
-        f'<div class="cta-row"><a class="btn call" href="tel:+216{PH1}">📞 {e(t["call"])} {PH1}</a>'
+        f'<div class="cta-row"><a class="btn call" href="tel:+216{PH1}">{icon("call")} {e(t["call"])} {PH1}</a>'
         f'<a class="btn wa" href="{WA}" target="_blank" rel="noopener">💬 {e(t["whatsapp"])}</a></div>'
     )
 
@@ -583,7 +583,7 @@ def city_cards(lang, cur, exclude=None):
     for k, c in CITIES.items():
         if k == exclude:
             continue
-        out.append(f'<a class="chip" href="{href(cur, page_path(lang, "massage-" + k))}">📍 {e(c[lang])}</a>')
+        out.append(f'<a class="chip" href="{href(cur, page_path(lang, "massage-" + k))}">{icon("location_on")} {e(c[lang])}</a>')
     return "".join(out)
 
 
