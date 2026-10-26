@@ -214,3 +214,63 @@ details p{margin:.7em 0 0;color:var(--muted)}
   .strip{grid-template-columns:1fr 1fr}
   .strip img:nth-child(3){display:none}
 }
+
+
+/* ===== LA VITA SPA — refonte sauge & crème ===== */
+:root{
+  --wine:#637a65; --wine-d:#263a2e; --rose:#b88763; --gold:#c6a66b; --gold-l:#f2e5c9;
+  --cream:#f5f3eb; --ink:#28332b; --muted:#687269; --line:#e1e5da; --wa:#198754;
+  --radius:24px; --shadow:0 20px 55px -24px rgba(38,58,46,.28);
+}
+body{background:#fffefa;color:var(--ink)}
+.site-header{background:rgba(255,254,250,.88);border-bottom-color:rgba(225,229,218,.9)}
+.brand{color:var(--wine-d)}
+.brand-mark{background:linear-gradient(145deg,#263a2e,#82977b);color:#fff8e9;box-shadow:0 8px 20px -8px rgba(38,58,46,.55);border-radius:14px}
+.nav a:hover{background:#edf0e7;color:var(--wine-d)}
+.nav a.lang{background:linear-gradient(135deg,var(--wine-d),var(--wine));color:#fff}
+.hero,.page-hero{background:radial-gradient(ellipse at 78% 14%,rgba(205,183,137,.42),transparent 34%),radial-gradient(ellipse at 4% 90%,rgba(133,158,125,.42),transparent 34%),linear-gradient(125deg,#23372b 0%,#405b47 52%,#71866a 100%)}
+.hero{padding:82px 0 128px}
+.hero h1,.page-hero h1{max-width:760px;letter-spacing:-.035em}
+.eyebrow{background:rgba(255,255,255,.1);border-color:rgba(242,229,201,.45);color:#f2e5c9;letter-spacing:.035em}
+.lead{max-width:600px;color:rgba(255,255,255,.9);line-height:1.9}
+.arch{border:7px solid rgba(255,254,250,.92);box-shadow:0 35px 80px -28px rgba(0,0,0,.55);border-radius:48% 48% 26px 26px}
+.b1{background:#d6c49a}.b2{background:#a8b89b}.b3{background:#e5d8b8}
+.float{color:var(--wine-d);box-shadow:0 15px 35px -15px rgba(0,0,0,.4)}
+.btn.call{background:linear-gradient(135deg,#e4cf9e,#c6a66b);color:#25352a;box-shadow:0 12px 28px -12px rgba(198,166,107,.75)}
+.btn.wa{background:linear-gradient(135deg,#198754,#2aab6c)}
+.btn.ghost{border-color:var(--wine);color:var(--wine-d)} .btn.ghost:hover{background:var(--wine-d);color:#fff}
+.chip{color:var(--wine-d);border-color:var(--line)} .hero .chip{color:#fff;border-color:rgba(255,255,255,.26)}
+.marquee{background:#f2f1e8;border-color:#e1e5da} .track span{color:var(--wine-d)} .track span::before{color:var(--gold)}
+.section{padding:82px 0} .section.alt{background:linear-gradient(180deg,#f5f4ec 0%,#fffefa 100%)}
+h2{color:var(--wine-d);letter-spacing:-.025em} h2::after{background:linear-gradient(90deg,#c6a66b,#91a58a);height:4px;width:64px}
+.card,.why,.step{border-color:#e4e7dd;box-shadow:0 8px 28px -18px rgba(38,58,46,.3)}
+.card::before{background:radial-gradient(circle,rgba(198,166,107,.23),transparent 70%)}
+.card:hover{box-shadow:0 24px 50px -25px rgba(38,58,46,.42);border-color:rgba(99,122,101,.45)}
+.card h3,.why h3,.step h3,summary{color:var(--wine-d)}
+.ico{background:linear-gradient(135deg,#f3f0e4,#e6ede2)}
+.num{background:linear-gradient(135deg,#263a2e,#82977b);box-shadow:0 10px 22px -8px rgba(38,58,46,.55)}
+details{border-color:#e1e5da} details[open]{box-shadow:0 12px 30px -16px rgba(38,58,46,.32);border-color:rgba(99,122,101,.45)}
+summary::after{color:var(--wine)}
+.band{background:linear-gradient(120deg,#263a2e,#405b47,#71866a,#263a2e)}
+.site-footer{background:#1e2e24;color:#e8ece3} .site-footer a{color:#e6d3a7}
+.sticky-cta{background:rgba(255,254,250,.94);border-top-color:#e1e5da}
+.svgi{color:var(--wine)} .card:hover .svgi:not(.big){color:#b88763}
+@media (max-width:899px){.hero{padding:50px 0 105px}.section{padding:60px 0}.nav{background:#fffefa;border-bottom-color:var(--line)}}
+@media (prefers-reduced-motion:reduce){.track{animation:none}}
+
+/* Avis clients : zone prête pour de vrais témoignages */
+.reviews-section{background:#fffefa}
+.reviews-heading{max-width:760px;margin:0 auto 30px;text-align:center}
+.reviews-heading h2::after{margin-inline:auto}
+.review-eyebrow{background:#edf0e7;border-color:#dfe6d9;color:#405b47;letter-spacing:0}
+.reviews-intro{color:var(--muted);font-size:1.08rem;line-height:1.85}
+.review-panel{max-width:790px;margin:0 auto;padding:clamp(28px,5vw,48px);text-align:center;border:1px solid #e1e5da;border-radius:30px;background:linear-gradient(140deg,#f7f6ef,#edf2e9);box-shadow:0 22px 60px -38px rgba(38,58,46,.42);position:relative;overflow:hidden}
+.review-panel::before,.review-panel::after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+.review-panel::before{width:190px;height:190px;top:-100px;right:-60px;background:rgba(198,166,107,.14)}
+.review-panel::after{width:170px;height:170px;bottom:-100px;left:-50px;background:rgba(99,122,101,.12)}
+.review-stars{font-size:1.6rem;letter-spacing:.22em;color:#b89a5d;margin-bottom:12px}
+.review-panel h3{font-family:"Playfair Display","Cairo",Georgia,serif;font-size:clamp(1.4rem,3vw,1.9rem);color:var(--wine-d);margin:.25em 0 .5em}
+.review-panel p{max-width:600px;margin:0 auto 22px;color:var(--muted);line-height:1.9}
+.review-btn{background:linear-gradient(135deg,#263a2e,#637a65);color:#fff;box-shadow:0 12px 25px -14px rgba(38,58,46,.7)}
+.review-btn:hover{color:#fff;box-shadow:0 16px 30px -14px rgba(38,58,46,.55)}
+@media(max-width:899px){.reviews-heading{text-align:start}.reviews-heading h2::after{margin-inline-start:0}.review-panel{border-radius:22px}}
