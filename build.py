@@ -29,7 +29,7 @@ BUSINESS = {
 SITE_URL = os.environ.get("SITE_URL", "https://VOTRE-COMPTE.github.io/la-vita-spa-sousse").rstrip("/")
 TODAY = date.today().isoformat()
 ROOT = Path(__file__).parent
-DIST = ROOT / "dist"
+DIST = Path(os.environ["OUT_DIR"]).resolve() if os.environ.get("OUT_DIR") else ROOT  # par défaut : le site est généré dans ce dossier
 
 PH1 = BUSINESS["phone1"]
 PH2 = BUSINESS["phone2"]
@@ -91,7 +91,7 @@ CITIES = {
 # ----------------------------------------------------------------------------
 SERVICES = {
     "massage-a-domicile": {
-        "icon": "🏠",
+        "icon": "home_health", "photo": "tools",
         "fr": "Massage à domicile",
         "ar": "ماساج في المنزل",
         "h1_fr": "Massage à domicile à Sousse, Monastir, Nabeul, Mahdia et Hammamet",
@@ -124,7 +124,7 @@ SERVICES = {
         ],
     },
     "hijama": {
-        "icon": "🩸",
+        "icon": "bloodtype", "photo": None,
         "fr": "Hijama (حجامة)",
         "ar": "حجامة",
         "h1_fr": "Hijama (حجامة) à Sousse et à domicile en Tunisie",
@@ -155,7 +155,7 @@ SERVICES = {
         ],
     },
     "hammam-sousse-sahloul": {
-        "icon": "♨️",
+        "icon": "hot_tub", "photo": "hammam",
         "fr": "Hammam turc à Sahloul",
         "ar": "حمام تركي بسهلول",
         "h1_fr": "Hammam turc et massage thérapie à Sousse Sahloul",
@@ -188,6 +188,53 @@ SERVICES = {
 }
 
 # ----------------------------------------------------------------------------
+# PHOTOS  (fichiers dans assets/images/ — remplacez-les par les vôtres, même nom)
+# ----------------------------------------------------------------------------
+PHOTOS = {
+    "tools":   ("outils-massage.jpg", 714, 830,
+                "Outils de massage en bois, huiles et serviettes préparés au spa La Vita à Sousse",
+                "أدوات ماساج خشبية وزيوت ومناشف جاهزة في مركز لافيتا سبا بسوسة"),
+    "hammam":  ("hammam-turc-sahloul.jpg", 714, 613,
+                "Hammam turc traditionnel avec gommage et bougies à Sousse Sahloul",
+                "حمام تركي تقليدي مع تقشير وشموع بسوسة سهلول"),
+    "hammam2": ("hammam-individuel-sousse.jpg", 622, 572,
+                "Hammam individuel avec douche privée à Sousse",
+                "حمام فردي بدش خاص بسوسة"),
+    "accueil": ("spa-sousse-accueil.jpg", 1000, 933,
+                "Accueil au spa La Vita à Sousse Sahloul",
+                "الاستقبال في مركز لافيتا سبا بسوسة سهلول"),
+    "soins":   ("spa-sousse-soins.jpg", 714, 713,
+                "Soins et massage au spa La Vita à Sousse",
+                "عناية وماساج في مركز لافيتا سبا بسوسة"),
+}
+
+
+ICONS = {
+    "home_health": '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M12 13v4M10 15h4"/>',
+    "bloodtype": '<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/>',
+    "hot_tub": '<path d="M3 13h18v2a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5z"/><path d="M8 3c-1 1.5 1 2.5 0 4M12 3c-1 1.5 1 2.5 0 4M16 3c-1 1.5 1 2.5 0 4"/>',
+    "location_on": '<path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+    "event_available": '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4M9 15l2 2 4-4"/>',
+    "spa": '<path d="M12 21c-5 0-8-3.5-8-9 5 0 8 3 8 9z"/><path d="M12 21c5 0 8-3.5 8-9-5 0-8 3-8 9z"/><path d="M12 21c-2-3-2-9 0-13 2 4 2 10 0 13z"/>',
+    "call": '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+}
+
+
+def icon(name, cls="svgi"):
+    return ('<svg class="%s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" '
+            'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">%s</svg>' % (cls, ICONS[name]))
+
+
+def photo(cur, key, lang, lazy=True, cls=""):
+    f, w, h, alt_fr, alt_ar = PHOTOS[key]
+    alt = alt_ar if lang == "ar" else alt_fr
+    src = asset(cur, "images/" + f)
+    load = 'loading="lazy"' if lazy else 'fetchpriority="high"'
+    klass = ' class="%s"' % cls if cls else ""
+    return '<img src="%s" alt="%s" width="%d" height="%d" %s%s data-full="%s">' % (src, e(alt), w, h, load, klass, src)
+
+
+# ----------------------------------------------------------------------------
 # TEXTES UI
 # ----------------------------------------------------------------------------
 UI = {
@@ -201,11 +248,22 @@ UI = {
         "home_title": "Massage à domicile Sousse, Monastir, Nabeul, Mahdia, Hammamet | La Vita Spa",
         "home_desc": "La Vita Spa Sousse : massage à domicile, hijama et hammam turc à Sahloul. Déplacement à Sousse, Monastir, Nabeul, Mahdia, Hammamet. Rendez-vous : 25213968.",
         "why_title": "Pourquoi nous choisir",
-        "why": [("📍", "À domicile ou au spa", "Vous choisissez : on se déplace chez vous ou vous venez à Sahloul."),
-                ("🗓️", "Sur rendez-vous", "Un créneau réservé pour vous, dans le calme et l'intimité."),
-                ("🧴", "Matériel complet", "Huiles, serviettes, table de massage et outils en bois apportés par nos soins."),
-                ("📞", "Réponse rapide", "Téléphone et WhatsApp pour confirmer votre séance.")],
+        "why": [("location_on", "À domicile ou au spa", "Vous choisissez : on se déplace chez vous ou vous venez à Sahloul."),
+                ("event_available", "Sur rendez-vous", "Un créneau réservé pour vous, dans le calme et l'intimité."),
+                ("spa", "Matériel complet", "Huiles, serviettes, table de massage et outils en bois apportés par nos soins."),
+                ("call", "Réponse rapide", "Téléphone et WhatsApp pour confirmer votre séance.")],
         "services_title": "Nos services",
+        "eyebrow": "Spa & massage · Sousse Sahloul",
+        "badge1": "Sur rendez-vous", "badge2": "On se déplace chez vous",
+        "marquee": ["Massage à domicile", "Hijama حجامة", "Hammam turc", "Massage thérapie", "Sousse", "Monastir", "Nabeul", "Mahdia", "Hammamet"],
+        "steps_title": "Comment ça marche",
+        "steps": [("1", "Vous appelez", "Téléphone ou WhatsApp : indiquez votre ville, votre quartier et le service."),
+                  ("2", "On confirme", "Nous fixons ensemble le jour, l'heure et l'adresse."),
+                  ("3", "Vous vous détendez", "Nous arrivons avec tout le matériel, ou vous venez à Sahloul.")],
+        "gallery_title": "Notre matériel, votre bien-être",
+        "gallery_text": "Outils de massage en bois, huiles aux essences naturelles, serviettes propres : tout est préparé pour une séance confortable, au spa comme chez vous.",
+        "band_title": "Prête pour un moment de détente ?",
+        "band_text": "Réservez votre massage à domicile ou votre hammam à Sahloul dès aujourd'hui.",
         "zones_title": "Zones de déplacement",
         "zones_sub": "Cliquez sur votre ville pour voir le détail de notre service de massage à domicile.",
         "local_title": "Notre spa à Sousse Sahloul",
@@ -243,11 +301,22 @@ UI = {
         "home_title": "ماساج في المنزل سوسة، المنستير، نابل، المهدية، الحمامات | لافيتا سبا",
         "home_desc": "لافيتا سبا سوسة: ماساج في المنزل، حجامة وحمام تركي بسهلول. نتنقل إلى سوسة والمنستير ونابل والمهدية والحمامات. للحجز 25213968.",
         "why_title": "لماذا تختارونا",
-        "why": [("📍", "في المنزل أو في المركز", "أنتم تختارون: نتنقل إليكم أو تأتون إلى سهلول."),
-                ("🗓️", "بموعد مسبق", "وقت محجوز لكم في هدوء وخصوصية."),
-                ("🧴", "معدات كاملة", "زيوت ومناشف وطاولة ماساج وأدوات خشبية نأتي بها بأنفسنا."),
-                ("📞", "رد سريع", "هاتف وواتساب لتأكيد حصتكم.")],
+        "why": [("location_on", "في المنزل أو في المركز", "أنتم تختارون: نتنقل إليكم أو تأتون إلى سهلول."),
+                ("event_available", "بموعد مسبق", "وقت محجوز لكم في هدوء وخصوصية."),
+                ("spa", "معدات كاملة", "زيوت ومناشف وطاولة ماساج وأدوات خشبية نأتي بها بأنفسنا."),
+                ("call", "رد سريع", "هاتف وواتساب لتأكيد حصتكم.")],
         "services_title": "خدماتنا",
+        "eyebrow": "سبا وماساج · سوسة سهلول",
+        "badge1": "بموعد مسبق", "badge2": "نتنقل إلى منزلكم",
+        "marquee": ["ماساج في المنزل", "حجامة", "حمام تركي", "ماساج علاجي", "سوسة", "المنستير", "نابل", "المهدية", "الحمامات"],
+        "steps_title": "كيف تتم الخدمة",
+        "steps": [("1", "تتصلون بنا", "هاتف أو واتساب: اذكروا المدينة والحي والخدمة المطلوبة."),
+                  ("2", "نؤكد الموعد", "نحدد معكم اليوم والساعة والعنوان."),
+                  ("3", "تستمتعون بالراحة", "نصلكم بكل المعدات، أو تأتون إلى سهلول.")],
+        "gallery_title": "معداتنا لراحتكم",
+        "gallery_text": "أدوات ماساج خشبية، زيوت طبيعية، مناشف نظيفة: كل شيء جاهز لحصة مريحة، في المركز أو في منزلكم.",
+        "band_title": "جاهزون للاسترخاء؟",
+        "band_text": "احجزوا الماساج في المنزل أو الحمام بسهلول من اليوم.",
         "zones_title": "مناطق التنقل",
         "zones_sub": "اضغطوا على مدينتكم لمعرفة تفاصيل خدمة الماساج في المنزل.",
         "local_title": "مركزنا في سوسة سهلول",
@@ -392,9 +461,10 @@ def layout(lang, slug, title, desc, body, schemas, noindex=False):
         f'<a href="{href(cur, page_path(lang, k))}">{e(SERVICES[k][lang].split(" (")[0])}</a>' for k in SERVICES
     )
     return f"""<!doctype html>
-<html lang="{t['lang']}" dir="{t['dir']}">
+<html lang="{t['lang']}" dir="{t['dir']}" class="no-js">
 <head>
 <meta charset="utf-8">
+<script>document.documentElement.className=""</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
@@ -411,14 +481,18 @@ def layout(lang, slug, title, desc, body, schemas, noindex=False):
 <meta name="geo.region" content="TN-51">
 <meta name="geo.placename" content="Sousse Sahloul">
 <link rel="icon" type="image/svg+xml" href="{asset(cur, 'favicon.svg')}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{asset(cur, 'style.css')}">
+<script defer src="{asset(cur, 'main.js')}"></script>
 {ld}
 </head>
 <body>
-<header class="site-header">
+<header class="site-header" id="top">
   <div class="wrap bar">
     <a class="brand" href="{href(cur, page_path(lang, ''))}"><span class="brand-mark">LV</span><span>{e(BUSINESS['name'])}</span></a>
-    <button class="menu-btn" aria-label="Menu" onclick="document.body.classList.toggle('menu-open')">☰</button>
+    <button class="menu-btn" aria-label="Menu" aria-expanded="false">☰</button>
     <nav class="nav">{nav_html(lang, cur)}<a class="lang" href="{switch}" hreflang="{other}">{e(t['other_lang'])}</a></nav>
   </div>
 </header>
@@ -466,14 +540,30 @@ def cta_block(lang):
 def service_cards(lang, cur, exclude=None):
     t = UI[lang]
     cards = []
-    for k, s in SERVICES.items():
+    n = 0
+    for k, s_ in SERVICES.items():
         if k == exclude:
             continue
+        n += 1
+        if s_["photo"]:
+            thumb = f'<span class="thumb">{photo(cur, s_["photo"], lang)}<span class="badge-ico">{icon(s_["icon"])}</span></span>'
+        else:
+            thumb = f'<span class="thumb noimg">{icon(s_["icon"], "svgi big")}</span>'
         cards.append(
-            f'<a class="card" href="{href(cur, page_path(lang, k))}"><span class="ico">{s["icon"]}</span>'
-            f'<h3>{e(s[lang])}</h3><p>{e(s["teaser_" + lang])}</p><span class="more">{e(t["read_more"])} →</span></a>'
+            f'<a class="card pic reveal" style="--d:{n * 90}ms" href="{href(cur, page_path(lang, k))}">{thumb}'
+            f'<span class="card-body"><h3>{e(s_[lang])}</h3><p>{e(s_["teaser_" + lang])}</p><span class="more">{e(t["read_more"])} →</span></span></a>'
         )
     return "".join(cards)
+
+
+WAVE = '<svg class="wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0,40 C240,90 480,0 720,30 C960,60 1200,90 1440,35 L1440,80 L0,80 Z"/></svg>'
+BLOBS = '<span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>'
+
+
+def band_html(lang):
+    t = UI[lang]
+    return (f'<section class="band"><div class="wrap reveal"><h2>{e(t["band_title"])}</h2><p>{e(t["band_text"])}</p>'
+            f'{cta_block(lang)}</div></section>')
 
 
 def city_cards(lang, cur, exclude=None):
@@ -492,22 +582,54 @@ def build_home(lang):
     t = UI[lang]
     cur = page_path(lang, "")
     why = "".join(
-        f'<div class="why"><span class="ico">{i}</span><h3>{e(a)}</h3><p>{e(b)}</p></div>' for i, a, b in t["why"]
+        f'<div class="why reveal" style="--d:{k * 90}ms"><span class="ico">{icon(i)}</span><h3>{e(a)}</h3><p>{e(b)}</p></div>'
+        for k, (i, a, b) in enumerate(t["why"])
+    )
+    steps = "".join(
+        f'<div class="step reveal" style="--d:{k * 120}ms"><span class="num">{n}</span><h3>{e(a)}</h3><p>{e(b)}</p></div>'
+        for k, (n, a, b) in enumerate(t["steps"])
+    )
+    mq = "".join(f"<span>{e(x)}</span>" for x in t["marquee"])
+    hero_img = photo(cur, "tools", lang, lazy=False)
+    gallery = "".join(
+        f'<figure class="g g{k} reveal" style="--d:{k * 80}ms">{photo(cur, key, lang)}<figcaption>{e(PHOTOS[key][4 if lang == "ar" else 3].split(" à ")[0].split(" بـ")[0])}</figcaption></figure>'
+        for k, key in enumerate(["accueil", "hammam", "tools", "hammam2", "soins"])
     )
     faqs = SERVICES["massage-a-domicile"]["faq_" + lang] + SERVICES["hammam-sousse-sahloul"]["faq_" + lang][:1]
     body = f"""
-<section class="hero"><div class="wrap">
-  <h1>{e(t['hero_title'])}</h1>
-  <p class="lead">{e(t['hero_sub'])}</p>
-  {cta_block(lang)}
-  <div class="chips">{city_cards(lang, cur)}</div>
+<section class="hero">
+  {BLOBS}
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <span class="eyebrow">{e(t['eyebrow'])}</span>
+      <h1>{e(t['hero_title'])}</h1>
+      <p class="lead">{e(t['hero_sub'])}</p>
+      {cta_block(lang)}
+      <div class="chips">{city_cards(lang, cur)}</div>
+    </div>
+    <div class="hero-visual">
+      <div class="arch">{hero_img}</div>
+      <span class="bubble p1">{photo(cur, "accueil", lang, lazy=False)}</span>
+      <span class="bubble p2">{photo(cur, "soins", lang, lazy=False)}</span>
+      <span class="float f1">🗓️ {e(t['badge1'])}</span>
+      <span class="float f2">🏠 {e(t['badge2'])}</span>
+      <span class="ring"></span>
+    </div>
+  </div>
+  {WAVE}
+</section>
+<div class="marquee" aria-hidden="true"><div class="track">{mq}{mq}</div></div>
+<section class="section"><div class="wrap"><h2 class="reveal">{e(t['services_title'])}</h2><div class="grid3">{service_cards(lang, cur)}</div></div></section>
+<section class="section alt"><div class="wrap">
+  <h2 class="reveal">{e(t['gallery_title'])}</h2><p class="reveal">{e(t['gallery_text'])}</p>
+  <div class="gallery">{gallery}</div>
+  <p class="reveal"><a class="btn ghost" href="{href(cur, page_path(lang, 'hammam-sousse-sahloul'))}">{e(t['local_title'])} →</a></p>
 </div></section>
-<section class="section"><div class="wrap"><h2>{e(t['services_title'])}</h2><div class="grid3">{service_cards(lang, cur)}</div></div></section>
-<section class="section alt"><div class="wrap"><h2>{e(t['why_title'])}</h2><div class="grid4">{why}</div></div></section>
-<section class="section"><div class="wrap"><h2>{e(t['zones_title'])}</h2><p>{e(t['zones_sub'])}</p><div class="chips">{city_cards(lang, cur)}</div></div></section>
-<section class="section alt"><div class="wrap narrow"><h2>{e(t['local_title'])}</h2><p>{e(t['local_text'])}</p>
-  <p><a class="btn ghost" href="{href(cur, page_path(lang, 'hammam-sousse-sahloul'))}">{e(t['read_more'])} →</a></p></div></section>
+<section class="section"><div class="wrap"><h2 class="reveal">{e(t['steps_title'])}</h2><div class="grid3 steps">{steps}</div></div></section>
+<section class="section alt"><div class="wrap"><h2 class="reveal">{e(t['why_title'])}</h2><div class="grid4">{why}</div></div></section>
+<section class="section"><div class="wrap"><h2 class="reveal">{e(t['zones_title'])}</h2><p class="reveal">{e(t['zones_sub'])}</p><div class="chips big">{city_cards(lang, cur)}</div></div></section>
 {faq_html(lang, faqs)}
+{band_html(lang)}
 """
     schemas = [schema_business(lang), schema_faq(faqs)]
     return layout(lang, "", t["home_title"], t["home_desc"], body, schemas)
@@ -518,16 +640,21 @@ def build_service(lang, key):
     s = SERVICES[key]
     cur = page_path(lang, key)
     sections = "".join(f"<h2>{e(h)}</h2><p>{e(p)}</p>" for h, p in s["body_" + lang])
+    shot = ""
+    if s["photo"]:
+        extra = photo(cur, "hammam2", lang) if key == "hammam-sousse-sahloul" else ""
+        shot = f'<div class="shots reveal"><figure class="shot">{photo(cur, s["photo"], lang)}</figure>{("<figure class=shot>" + extra + "</figure>") if extra else ""}</div>'
     title_suffix = " | La Vita Spa Sousse" if lang == "fr" else " | لافيتا سبا سوسة"
     body = f"""
-<section class="page-hero"><div class="wrap">
+<section class="page-hero">{BLOBS}<div class="wrap">
   <nav class="crumbs"><a href="{href(cur, page_path(lang, ''))}">{e(t['breadcrumb_home'])}</a> › <span>{e(s[lang])}</span></nav>
   <h1>{e(s['h1_' + lang])}</h1>{cta_block(lang)}
-</div></section>
-<section class="section"><div class="wrap narrow prose">{sections}</div></section>
+</div>{WAVE}</section>
+<section class="section"><div class="wrap narrow prose">{shot}{sections}</div></section>
 <section class="section alt"><div class="wrap"><h2>{e(t['zones_title'])}</h2><div class="chips">{city_cards(lang, cur)}</div></div></section>
 {faq_html(lang, s['faq_' + lang])}
 <section class="section"><div class="wrap"><h2>{e(t['other_services'])}</h2><div class="grid3">{service_cards(lang, cur, exclude=key)}</div></div></section>
+{band_html(lang)}
 """
     crumbs = schema_breadcrumb([
         (t["breadcrumb_home"], abs_url(page_path(lang, ""))),
@@ -551,18 +678,20 @@ def build_city(lang, key):
     areas = "".join(f"<li>{e(a)}</li>" for a in c["areas_" + lang])
     faqs = [(q.format(c=name), a.format(c=name)) for q, a in t["city_faq"]]
     body = f"""
-<section class="page-hero"><div class="wrap">
+<section class="page-hero">{BLOBS}<div class="wrap">
   <nav class="crumbs"><a href="{href(cur, page_path(lang, ''))}">{e(t['breadcrumb_home'])}</a> › <span>{e(name)}</span></nav>
   <h1>{e(t['city_h1'].format(c=name))}</h1>
   <p class="lead">{e(c['intro_' + lang])}</p>{cta_block(lang)}
-</div></section>
+</div>{WAVE}</section>
 <section class="section"><div class="wrap narrow prose">
   <p>{e(c['local_' + lang])}</p>
   <h2>{e(t['areas_title'])}</h2><ul class="areas">{areas}</ul>
 </div></section>
+<section class="section"><div class="wrap"><div class="strip reveal">{photo(cur, "tools", lang)}{photo(cur, "hammam", lang)}{photo(cur, "accueil", lang)}</div></div></section>
 <section class="section alt"><div class="wrap"><h2>{e(t['city_h2_services'].format(c=name))}</h2><div class="grid3">{service_cards(lang, cur)}</div></div></section>
 {faq_html(lang, faqs)}
 <section class="section alt"><div class="wrap"><h2>{e(t['other_cities'])}</h2><div class="chips">{city_cards(lang, cur, exclude=key)}</div></div></section>
+{band_html(lang)}
 """
     crumbs = schema_breadcrumb([
         (t["breadcrumb_home"], abs_url(page_path(lang, ""))),
@@ -582,7 +711,7 @@ def build_contact(lang):
     cur = page_path(lang, "contact")
     maps = "https://www.google.com/maps/search/?api=1&query=" + "spa+massage+Sahloul+Sousse"
     body = f"""
-<section class="page-hero"><div class="wrap">
+<section class="page-hero">{BLOBS}<div class="wrap">
   <nav class="crumbs"><a href="{href(cur, page_path(lang, ''))}">{e(t['breadcrumb_home'])}</a> › <span>{e(t['contact'])}</span></nav>
   <h1>{e(t['contact_h1'])}</h1><p class="lead">{e(t['contact_p'])}</p>
 </div></section>
@@ -607,7 +736,7 @@ def build_404():
     lang = "fr"
     t = UI[lang]
     cur = "404.html"
-    body = f"""<section class="page-hero"><div class="wrap"><h1>{e(t['notfound'])} / {e(UI['ar']['notfound'])}</h1>
+    body = f"""<section class="page-hero">{BLOBS}<div class="wrap"><h1>{e(t['notfound'])} / {e(UI['ar']['notfound'])}</h1>
 <p class="lead">{e(t['notfound_p'])}</p><p><a class="btn call" href="{SITE_URL}/">{e(t['back'])}</a></p></div></section>"""
     htmldoc = layout(lang, "404", t["notfound"], t["notfound_p"], body, [], noindex=True)
     # la page 404 peut être servie depuis n'importe quel chemin : liens absolus
@@ -624,10 +753,14 @@ def write(path, content):
 
 
 def main():
-    if DIST.exists():
-        shutil.rmtree(DIST)
-    DIST.mkdir()
-    shutil.copytree(ROOT / "assets", DIST / "assets")
+    if DIST != ROOT:
+        if DIST.exists():
+            shutil.rmtree(DIST)
+        DIST.mkdir(parents=True)
+        shutil.copytree(ROOT / "assets", DIST / "assets")
+    else:  # génération en place : on ne supprime que les pages générées
+        for name in ["ar", "contact", "hijama", "hammam-sousse-sahloul", "massage-a-domicile"] + ["massage-" + k for k in CITIES]:
+            shutil.rmtree(ROOT / name, ignore_errors=True)
 
     urls = []
     for lang in ("fr", "ar"):
