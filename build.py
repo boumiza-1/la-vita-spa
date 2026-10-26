@@ -26,7 +26,7 @@ BUSINESS = {
     "lat": "35.8256",
     "lng": "10.6084",
 }
-SITE_URL = os.environ.get("SITE_URL", "https://VOTRE-COMPTE.github.io/la-vita-spa-sousse").rstrip("/")
+SITE_URL = os.environ.get("SITE_URL", "https://boumiza-1.github.io/la-vita-spa").rstrip("/")
 TODAY = date.today().isoformat()
 ROOT = Path(__file__).parent
 DIST = Path(os.environ["OUT_DIR"]).resolve() if os.environ.get("OUT_DIR") else ROOT  # par défaut : le site est généré dans ce dossier
@@ -245,8 +245,8 @@ UI = {
         "other_lang": "العربية",
         "hero_title": "Massage à domicile et spa à Sousse",
         "hero_sub": "Massage relaxant et thérapeutique, hijama et hammam turc. Nous venons chez vous à Sousse, Monastir, Nabeul, Mahdia et Hammamet, ou vous accueillons à Sahloul.",
-        "home_title": "Massage à domicile Sousse, Monastir, Nabeul, Mahdia, Hammamet | La Vita Spa",
-        "home_desc": "La Vita Spa Sousse : massage à domicile, hijama et hammam turc à Sahloul. Déplacement à Sousse, Monastir, Nabeul, Mahdia, Hammamet. Rendez-vous : 25213968.",
+        "home_title": "Massage à domicile Sousse et Nabeul | Spa, hijama et hammam | La Vita Spa",
+        "home_desc": "La Vita Spa Sousse propose massage à domicile à Sousse, Nabeul, Monastir, Mahdia et Hammamet, ainsi que hijama et hammam turc à Sahloul. Contact et rendez-vous WhatsApp : 25213968.",
         "why_title": "Pourquoi nous choisir",
         "why": [("location_on", "À domicile ou au spa", "Vous choisissez : on se déplace chez vous ou vous venez à Sahloul."),
                 ("event_available", "Sur rendez-vous", "Un créneau réservé pour vous, dans le calme et l'intimité."),
@@ -284,8 +284,8 @@ UI = {
         "breadcrumb_home": "Accueil",
         "notfound": "Page introuvable", "notfound_p": "La page demandée n'existe pas.", "back": "Retour à l'accueil",
         "city_h1": "Massage à domicile à {c}",
-        "city_title": "Massage à domicile {c} | Massage thérapie et hijama | La Vita Spa",
-        "city_desc": "Massage à domicile à {c} : relaxant, thérapeutique, hijama. Sur rendez-vous au 25213968. Service de déplacement par La Vita Spa Sousse.",
+        "city_title": "Massage à domicile {c} | Massage relaxant et bien-être | La Vita Spa Sousse",
+        "city_desc": "Vous cherchez un massage à domicile à {c} ? La Vita Spa Sousse propose des séances de massage relaxant et de bien-être sur rendez-vous. Contactez-nous au 25213968 pour vérifier la disponibilité dans votre quartier.",
         "city_h2_services": "Nos soins à {c}",
         "city_faq": [("Faites-vous le massage à domicile à {c} ?", "Oui, nous nous déplaçons à {c} sur rendez-vous. Appelez le 25213968 ou écrivez sur WhatsApp."),
                      ("Quels soins proposez-vous à {c} ?", "Massage relaxant, massage thérapeutique, massage aux outils en bois et hijama selon disponibilité."),
@@ -298,8 +298,8 @@ UI = {
         "other_lang": "Français",
         "hero_title": "ماساج في المنزل وسبا بسوسة",
         "hero_sub": "ماساج استرخائي وعلاجي، حجامة وحمام تركي. نتنقل إليكم بسوسة والمنستير ونابل والمهدية والحمامات، أو نستقبلكم في سهلول.",
-        "home_title": "ماساج في المنزل سوسة، المنستير، نابل، المهدية، الحمامات | لافيتا سبا",
-        "home_desc": "لافيتا سبا سوسة: ماساج في المنزل، حجامة وحمام تركي بسهلول. نتنقل إلى سوسة والمنستير ونابل والمهدية والحمامات. للحجز 25213968.",
+        "home_title": "ماساج في المنزل سوسة ونابل | سبا وحجامة وحمام تركي | لافيتا سبا",
+        "home_desc": "لافيتا سبا سوسة توفر ماساج في المنزل بسوسة ونابل والمنستير والمهدية والحمامات، مع الحجامة والحمام التركي بسهلول. للحجز والاستفسار عبر الهاتف وواتساب: 25213968.",
         "why_title": "لماذا تختارونا",
         "why": [("location_on", "في المنزل أو في المركز", "أنتم تختارون: نتنقل إليكم أو تأتون إلى سهلول."),
                 ("event_available", "بموعد مسبق", "وقت محجوز لكم في هدوء وخصوصية."),
@@ -337,8 +337,8 @@ UI = {
         "breadcrumb_home": "الرئيسية",
         "notfound": "الصفحة غير موجودة", "notfound_p": "الصفحة المطلوبة غير موجودة.", "back": "العودة إلى الرئيسية",
         "city_h1": "ماساج في المنزل في {c}",
-        "city_title": "ماساج في المنزل {c} | ماساج علاجي وحجامة | لافيتا سبا",
-        "city_desc": "ماساج في المنزل في {c}: استرخائي، علاجي، حجامة. بموعد مسبق على 25213968. خدمة تنقل من لافيتا سبا سوسة.",
+        "city_title": "ماساج في المنزل {c} | ماساج استرخائي وعناية بالجسم | لافيتا سبا سوسة",
+        "city_desc": "تبحثون عن ماساج في المنزل في {c}؟ توفر لافيتا سبا سوسة حصص ماساج استرخائي وعناية بالجسم بموعد مسبق. اتصلوا على 25213968 للتأكد من إمكانية التنقل إلى حيّكم.",
         "city_h2_services": "خدماتنا في {c}",
         "city_faq": [("هل تقدمون ماساج في المنزل في {c}؟", "نعم، نتنقل إلى {c} بموعد مسبق. اتصلوا على 25213968 أو راسلونا على واتساب."),
                      ("ما هي الخدمات المتوفرة في {c}؟", "ماساج استرخائي، ماساج علاجي، ماساج بالأدوات الخشبية وحجامة حسب التوفر."),
