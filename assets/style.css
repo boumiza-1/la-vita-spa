@@ -318,3 +318,5 @@ summary::after{color:var(--wine)}
 /* Photo de couverture plus éditoriale : contraste, cadrage et finition */
 .hero-visual .arch img{object-position:center;filter:saturate(1.04) contrast(1.02)}
 .hero-visual .arch{box-shadow:0 32px 76px -25px rgba(0,0,0,.5)}
+
+.testimonial-status{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;background:#edf0e7;color:#405b47;font-size:.76rem;font-weight:700;letter-spacing:0}
