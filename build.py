@@ -206,6 +206,12 @@ PHOTOS = {
     "soins":   ("spa-sousse-soins.jpg", 714, 713,
                 "Soins et massage au spa La Vita à Sousse",
                 "عناية وماساج في مركز لافيتا سبا بسوسة"),
+    "cover": ("https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1200&q=85", 1200, 1400,
+              "Ambiance spa et massage bien-être pour La Vita Spa à Sousse",
+              "أجواء سبا وماساج للاسترخاء في لافيتا سبا بسوسة"),
+    "massage-photo": ("https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=900&q=85", 900, 900,
+              "Ambiance de soins et de bien-être dans un spa",
+              "أجواء العناية والاسترخاء في مركز سبا"),
 }
 
 
@@ -228,7 +234,7 @@ def icon(name, cls="svgi"):
 def photo(cur, key, lang, lazy=True, cls=""):
     f, w, h, alt_fr, alt_ar = PHOTOS[key]
     alt = alt_ar if lang == "ar" else alt_fr
-    src = asset(cur, "images/" + f)
+    src = f if f.startswith("https://") else asset(cur, "images/" + f)
     load = 'loading="lazy"' if lazy else 'fetchpriority="high"'
     klass = ' class="%s"' % cls if cls else ""
     return '<img src="%s" alt="%s" width="%d" height="%d" %s%s data-full="%s">' % (src, e(alt), w, h, load, klass, src)
@@ -590,10 +596,10 @@ def build_home(lang):
         for k, (n, a, b) in enumerate(t["steps"])
     )
     mq = "".join(f"<span>{e(x)}</span>" for x in t["marquee"])
-    hero_img = photo(cur, "tools", lang, lazy=False)
+    hero_img = photo(cur, "cover", lang, lazy=False)
     gallery = "".join(
         f'<figure class="g g{k} reveal" style="--d:{k * 80}ms">{photo(cur, key, lang)}<figcaption>{e(PHOTOS[key][4 if lang == "ar" else 3].split(" à ")[0].split(" بـ")[0])}</figcaption></figure>'
-        for k, key in enumerate(["accueil", "hammam", "tools", "hammam2", "soins"])
+        for k, key in enumerate(["accueil", "hammam", "tools", "hammam2", "massage-photo"])
     )
     faqs = SERVICES["massage-a-domicile"]["faq_" + lang] + SERVICES["hammam-sousse-sahloul"]["faq_" + lang][:1]
     body = f"""
@@ -610,7 +616,7 @@ def build_home(lang):
     <div class="hero-visual">
       <div class="arch">{hero_img}</div>
       <span class="bubble p1">{photo(cur, "accueil", lang, lazy=False)}</span>
-      <span class="bubble p2">{photo(cur, "soins", lang, lazy=False)}</span>
+      <span class="bubble p2">{photo(cur, "massage-photo", lang, lazy=False)}</span>
       <span class="float f1">🗓️ {e(t['badge1'])}</span>
       <span class="float f2">🏠 {e(t['badge2'])}</span>
       <span class="ring"></span>
